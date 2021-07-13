@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My first Vue app</title>
+    <script src="https://unpkg.com/vue"></script>
+</head>
+
+<body>
+    <div id="app">
+        {{ message }}
+        <p v-if="seen">Agora você me viu</p>
+        <ol>
+            <li v-for="todo in todos">
+                {{ todo.text }}
+            </li>
+        </ol>
+        <button v-on:click="addItem">Add item</button>
+    </div>
+
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {                
+                message: 'Hello Vue!',
+                seen: false,
+                todos: [
+                    { text: 'Aprender JavaScript' },
+                    { text: 'Aprender Vue' },
+                    { text: 'Criar algo incrível' }
+                ]
+            },
+            methods: {
+                addItem: function () {
+                    this.todos.push({ text: 'Novo item' })
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>vue2</title>
+    <script src="https://unpkg.com/vue"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+
+<body>
+    <div id="root">
+        Placa: <input type="text" name="placa" v-model="placa"> <br>
+        Modelo: <input type="text" name="modelo" v-model="modelo"> <br>
+        <button v-on:click="adicionar">Adicionar</button>
+            <table border="1" cellpadding="0" cellspacing="0">
+                <tr v-for="carro in carros">
+                    <td><button v-on:click="excluir(carro.id)">Excluir</button></td>
+                    <td><button v-on:click="alterar(carro.id)">Alterar</button></td>
+                    <td>{{carro.id}}</td>
+                    <td>{{carro.placa}}</td>
+                    <td>{{carro.modelo}}</td>
+                </tr>
+            </table>
+    </div>
+    <script>
+        new Vue({
+            el: '#root',
+            data: {
+                placa: "",
+                modelo: "",
+                carros: []
+            },
+            methods: {
+                listar: function () {
+                    fetch('listar.php').then((body) => body.json()).then((data) => {
+                        this.carros = data;
+                    }).catch((error) => console.error('Erro:', error.message || error));
+                },
+
+                adicionar: function () {
+                    fetch('adicionar.php?placa=' + this.placa + "&modelo=" + this.modelo).then((body) => body.json()).then((data) => {
+                        //alert(data.mensagem);
+                        this.placa = "";
+                        this.modelo = "";
+                        this.listar();
+                    }).catch((error) => console.error('Erro:', error.message || error));
+                },
+
+
+                excluir: function (id) {
+                    fetch('excluir.php?id=' + id).then((body) => body.json()).then((data) => {
+                        this.listar();
+                    }).catch((error) => console.error('Erro:', error.message || error));
+                },
+                alterar: function (id) {
+                    var nova_placa = prompt("Nova placa:");
+                    var novo_modelo = prompt("Novo modelo:");
+                    fetch('alterar.php?id=' + id + '&placa=' + nova_placa + "&modelo=" + novo_modelo).then((body) => body.json()).then((data) => {
+                        this.listar();
+                    }).catch((error) => console.error('Erro:', error.message || error));
+                }
+            },
+            created: function () {
+                this.listar();
+            }
+        })
+    </script>
+</body>
+
+</html>

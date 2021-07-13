@@ -1,0 +1,12 @@
+sudo apt install nodejs
+sudo apt install npm
+npm install -g @vue/cli
+
+
+ listar: function () {
+                    // n precisa
+                    //let self = this;
+                    fetch('listar.php').then((body) => body.json()).then((data) => {
+                        this.carros = data;
+                    }).catch((error) => console.error('Erro:', error.message || error));
+                } 
